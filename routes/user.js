@@ -7,6 +7,6 @@ userRoutes.get("/", usersGet);
 
 userRoutes.post("/", usersPost);
 
-userRoutes.put("/", usersPut);
+userRoutes.put("/:id", usersPut);
 
 userRoutes.delete("/", usersDelete);

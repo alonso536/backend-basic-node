@@ -1,12 +1,15 @@
-import { response } from "express";
+import { request, response } from "express";
 
-const usersGet = (req, res = response) => {
+const usersGet = (req = request, res = response) => {
+    const query = req.query;
+
     res.json({
-        msg: "GET desde el controlador"
+        msg: "GET desde el controlador",
+        query
     })
 }
 
-const usersPost = (req, res = response) => {
+const usersPost = (req = request, res = response) => {
     const {title} = req.body;
     res.json({
         msg: "POST desde el controlador",
@@ -14,13 +17,16 @@ const usersPost = (req, res = response) => {
     })
 }
 
-const usersPut = (req, res = response) => {
+const usersPut = (req = request, res = response) => {
+    const id = req.params.id;
+
     res.json({
-        msg: "PUT desde el controlador"
+        msg: "PUT desde el controlador",
+        id
     })
 }
 
-const usersDelete = (req, res = response) => {
+const usersDelete = (req = request, res = response) => {
     res.json({
         msg: "DELETE desde el controlador"
     })
