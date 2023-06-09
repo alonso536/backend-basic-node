@@ -28,12 +28,17 @@ const store = async (req = request, res = response) => {
     })
 }
 
-const update = (req = request, res = response) => {
+const update = async (req = request, res = response) => {
     const id = req.params.id;
+    const { _id, email, password, google, ...user } = req.body;
 
+    if(password) {
+        user.password = bcryptjs.hashSync(password, bcryptjs.genSaltSync());
+    }
+
+    const userUpdate = await User.findByIdAndUpdate(id, user);
     res.json({
-        msg: "PUT desde el controlador",
-        id
+        userUpdate
     })
 }
 

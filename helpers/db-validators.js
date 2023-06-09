@@ -23,3 +23,10 @@ export const isRoleValid = async (role = "") => {
         throw new Error(`El rol ${ role } no está registrado en la base de datos`);
     }
 }
+
+export const userExists = async (id) => {
+    const userExists = await User.findById(id);
+    if(!userExists) {
+        throw new Error(`No existe un usuario con el id ${id}`);
+    }
+}
