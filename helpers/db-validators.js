@@ -6,6 +6,8 @@ export const isEmail = (email = "") => {
     if(!emailRegex.test(email)) {
         throw new Error("El email ingresado no está en un formato correcto");
     }
+
+    return true;
 }
 
 export const emailExists = async (email = "") => {

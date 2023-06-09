@@ -11,8 +11,7 @@ userRoutes.get("/", index);
 userRoutes.post("/", [
     check("name", "El nombre es obligatorio").notEmpty(),
     check("surname", "El apellido es obligatorio").notEmpty(),
-    check("email").custom(isEmail),
-    check("email").custom(emailExists),
+    check("email").custom(isEmail).custom(emailExists),
     check("password", "La contraseña es obligatoria").notEmpty(),
     check("role").custom(isRoleValid),
     validateUser
