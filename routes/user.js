@@ -1,12 +1,23 @@
 import { Router } from "express";
-import { usersGet, usersPost, usersPut, usersDelete } from "../controllers/user.js"
+import { check } from "express-validator";
+import { index, store, update, destroy } from "../controllers/user.js"
+import { validateUser } from "../middlewares/validate-user.js";
+import { isEmail, emailExists, isRoleValid } from "../helpers/db-validators.js";
 
 export const userRoutes = Router();
 
-userRoutes.get("/", usersGet);
+userRoutes.get("/", index);
 
-userRoutes.post("/", usersPost);
+userRoutes.post("/", [
+    check("name", "El nombre es obligatorio").notEmpty(),
+    check("surname", "El apellido es obligatorio").notEmpty(),
+    check("email").custom(isEmail),
+    check("email").custom(emailExists),
+    check("password", "La contraseña es obligatoria").notEmpty(),
+    check("role").custom(isRoleValid),
+    validateUser
+], store);
 
-userRoutes.put("/:id", usersPut);
+userRoutes.put("/:id", update);
 
-userRoutes.delete("/", usersDelete);
+userRoutes.delete("/", destroy);
