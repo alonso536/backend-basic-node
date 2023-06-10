@@ -1,13 +1,16 @@
 import express from "express";
 import cors from "cors";
-import { userRoutes } from "../routes/user.js"
+import { userRoutes } from "../routes/user.js";
+import { authRoutes } from "../routes/auth.js";
 import { dbConnection } from "../database/config.js";
 
 export class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
+
         this.usersPath = "/api/users";
+        this.authPath = "/api/auth";
 
         this.database();
 
@@ -18,6 +21,7 @@ export class Server {
 
     routes() {
         this.app.use(this.usersPath, userRoutes);
+        this.app.use(this.authPath, authRoutes)
     }
 
     async database() {
