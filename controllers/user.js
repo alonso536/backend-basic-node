@@ -2,13 +2,20 @@ import { request, response } from "express";
 import { User } from "../models/user.js";
 import bcryptjs from "bcryptjs";
 
-const index = (req = request, res = response) => {
-    const query = req.query;
+const index = async (req = request, res = response) => {
+    const { limit = 5, skip = 0 } = req.query; 
+
+    const [total, users] = await Promise.all([
+        User.countDocuments({ active: true }),
+        User.find({ active: true })
+            .skip(Number(skip))
+            .limit(Number(limit))
+    ]);
 
     res.json({
-        msg: "GET desde el controlador",
-        query
-    })
+        users,
+        total
+    });
 }
 
 const store = async (req = request, res = response) => {
@@ -25,7 +32,16 @@ const store = async (req = request, res = response) => {
     await user.save();
     res.json({
         user
-    })
+    });
+}
+
+const show = async (req = request, res = response) => {
+    const id = req.params.id;
+    const user = await User.findOne({ _id: id });
+
+    res.json({
+        user
+    });
 }
 
 const update = async (req = request, res = response) => {
@@ -39,18 +55,25 @@ const update = async (req = request, res = response) => {
     const userUpdate = await User.findByIdAndUpdate(id, user);
     res.json({
         userUpdate
-    })
+    });
 }
 
-const destroy = (req = request, res = response) => {
+const destroy = async (req = request, res = response) => {
+    const id = req.params.id;
+    const user = await User.findOne({ _id: id });
+    user.active = false;
+
+    const userDelete = await User.findByIdAndUpdate(id, user);
+
     res.json({
-        msg: "DELETE desde el controlador"
-    })
+        id
+    });
 }
 
 export {
     index,
     store,
+    show,
     update,
     destroy
 }

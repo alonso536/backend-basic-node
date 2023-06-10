@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { index, store, update, destroy } from "../controllers/user.js"
+import { index, store, show, update, destroy } from "../controllers/user.js"
 import { validateUser } from "../middlewares/validate-user.js";
 import { isEmail, emailExists, isRoleValid, userExists } from "../helpers/db-validators.js";
 
@@ -17,6 +17,12 @@ userRoutes.post("/", [
     validateUser
 ], store);
 
+userRoutes.get("/:id", [
+    check("id").isMongoId(),
+    check("id").custom(userExists),
+    validateUser
+], show);
+
 userRoutes.put("/:id", [
     check("id").isMongoId(),
     check("id").custom(userExists),
@@ -24,4 +30,8 @@ userRoutes.put("/:id", [
     validateUser
 ], update);
 
-userRoutes.delete("/", destroy); 
+userRoutes.delete("/:id", [
+    check("id").isMongoId(),
+    check("id").custom(userExists),
+    validateUser
+], destroy); 
