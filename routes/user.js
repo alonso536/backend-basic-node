@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { index, store, show, update, destroy } from "../controllers/user.js"
-import { validateUser } from "../middlewares/validate-user.js";
 import { isEmail, emailExists, isRoleValid, userExists } from "../helpers/db-validators.js";
+import { validateJWT, validateUser, hasRole} from "../middlewares/index.js";
+
 
 export const userRoutes = Router();
 
@@ -31,6 +32,8 @@ userRoutes.put("/:id", [
 ], update);
 
 userRoutes.delete("/:id", [
+    validateJWT,
+    hasRole("ADMIN"),
     check("id").isMongoId(),
     check("id").custom(userExists),
     validateUser
