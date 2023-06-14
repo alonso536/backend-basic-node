@@ -2,6 +2,7 @@ import { request, response } from "express";
 import { User } from "../models/user.js";
 import { generateJWT } from "../helpers/generate-jwt.js";
 import bcryptjs from "bcryptjs";
+import { googleVerify } from "../helpers/google-verify.js";
 
 export const login = async (req = request, res = response) => {
     const { email, password } = req.body;
@@ -39,4 +40,44 @@ export const login = async (req = request, res = response) => {
             msg: "Ha ocurrido un error. Hable con el administrador"
         });
     }    
+}
+
+export const googleSignIn = async (req = request, res = response) => {
+    const { id_token } = req.body;
+
+    try {
+        const { name, surname, email, img } = await googleVerify(id_token);
+        
+        let user = await User.findOne({ email });
+
+        if(!user) {
+            const data = {
+                name,
+                surname,
+                email,
+                password: ":P",
+                role: "USER",
+                img,
+                google: true
+            };
+
+            user = new User(data);
+            await user.save();
+        }
+
+        if(!user.active) {
+            return res.status(401).json({
+                msg: "Usuario bloqueado. Hable con el administrador"
+            });
+        }
+
+        const token = await generateJWT(user.id);
+
+        res.json({
+            user,
+            token
+        });
+    } catch(error) {
+
+    }
 }

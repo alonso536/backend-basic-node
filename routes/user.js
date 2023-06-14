@@ -2,7 +2,7 @@ import { Router } from "express";
 import { check } from "express-validator";
 import { index, store, show, update, destroy } from "../controllers/user.js"
 import { isEmail, emailExists, isRoleValid, userExists } from "../helpers/db-validators.js";
-import { validateJWT, validateUser, hasRole} from "../middlewares/index.js";
+import { validateJWT, validateUser, hasRole } from "../middlewares/index.js";
 
 
 export const userRoutes = Router();
