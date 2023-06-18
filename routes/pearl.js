@@ -31,10 +31,10 @@ pearlRoutes.put("/:id", [
     validateJWT,
     check("id", "No es un id válido").isMongoId(),
     check("id").custom(pearlExists),
-    check("title", "El titulo es obligatorio").notEmpty(),
-    check("body", "El cuerpo es obligatorio").notEmpty(),
-    check("category", "La categoría es obligatoria").notEmpty(),
-    check("category", "La categoría no existe").isMongoId(),
+    check("title", "El titulo es obligatorio").optional().notEmpty(),
+    check("body", "El cuerpo es obligatorio").optional().notEmpty(),
+    check("category", "La categoría es obligatoria").optional().notEmpty(),
+    check("category", "La categoría no existe").optional().isMongoId(),
     validateUser
 ], update);
 

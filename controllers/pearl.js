@@ -54,19 +54,20 @@ const update = async (req = request, res = response) => {
     const id = req.params.id;
     const { _id } = req.auth;
 
-    const { title, body, category, active, user } = req.body;
+    const { user, title, body, category } = await Pearl.findOne({ _id: id });
+
+    const data = {
+        title: req.body.title ?? title,
+        body: req.body.body ?? body,
+        category: req.body.category ?? category
+    }
+
+    console.log(data);
 
     if(user.toString() != _id) {
         return res.status(403).json({
             msg: "El recurso no es de tu autoría"
         });
-    }
-
-    const data = {
-        title,
-        body,
-        category,
-        user
     }
 
     const pearlUpdate = await Pearl.findByIdAndUpdate(id, data);
