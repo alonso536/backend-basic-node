@@ -8,3 +8,17 @@ export const validateUser = (req, res, next) => {
 
     next();
 }
+
+export const isOwn = (req, res, next) => {
+    const { _id } = req.auth;
+
+    const id = req.params.id;
+
+    if(_id != id) {
+        return res.status(403).json({
+            msg: "El usuario está intentando actualizar a otro usuario"
+        });
+    }
+
+    next();
+}

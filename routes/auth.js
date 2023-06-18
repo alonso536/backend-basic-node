@@ -14,4 +14,4 @@ authRoutes.post("/login", [
 authRoutes.post("/google", [
     check("id_token", "El id_token es obligatorio"),
     validateUser
-], googleSignIn)
+], googleSignIn);

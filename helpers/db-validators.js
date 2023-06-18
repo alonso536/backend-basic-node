@@ -1,5 +1,4 @@
-import { User } from "../models/user.js";
-import { Role } from "../models/role.js";
+import { User, Category, Role } from "../models/index.js";
 
 export const isEmail = (email = "") => {
     const emailRegex = new RegExp(`^[a-zA-Z0-9_.+-]{3,30}@[a-zA-Z0-9-]{3,30}\\.[a-zA-Z0-9-.]{2,10}$`);
@@ -28,5 +27,12 @@ export const userExists = async (id) => {
     const userExists = await User.findById(id);
     if(!userExists) {
         throw new Error(`No existe un usuario con el id ${id}`);
+    }
+}
+
+export const categoryExists = async (id) => {
+    const categoryExists = await Category.findById(id);
+    if(!categoryExists) {
+        throw new Error(`No existe una categoria con el id ${id}`);
     }
 }
