@@ -1,8 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { validateUser } from "../middlewares/validate-user.js";
-import { hasRole } from "../middlewares/validate-role.js";
-import { validateJWT } from "../middlewares/validate-jwt.js";
+import { validateUser, validateJWT, hasRole } from "../middlewares/index.js";
 import { index, store, show, update, destroy } from "../controllers/category.js";
 import { categoryExists } from "../helpers/db-validators.js";
 

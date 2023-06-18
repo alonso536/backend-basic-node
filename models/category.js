@@ -1,10 +1,9 @@
 import {Schema, model} from "mongoose";
-import { User } from "./user.js";
 
 const CategorySchema = Schema({
     name: {
         type: String,
-        required: [true, "El rol es obligatorio"],
+        required: [true, "El nombre es obligatorio"],
         unique: true
     },
     active: {

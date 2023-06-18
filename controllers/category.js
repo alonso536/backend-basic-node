@@ -56,6 +56,7 @@ const show = async (req = request, res = response) => {
 
 const update = async (req = request, res = response) => {
     const id = req.params.id;
+    const {active, user} = req.body;
     const name = req.body.name.toUpperCase();
 
     const data = {

@@ -1,4 +1,5 @@
 import { validationResult } from "express-validator";
+import { Pearl } from "../models/index.js";
 
 export const validateUser = (req, res, next) => {
     const errors = validationResult(req);
@@ -16,7 +17,7 @@ export const isOwn = (req, res, next) => {
 
     if(_id != id) {
         return res.status(403).json({
-            msg: "El usuario está intentando actualizar a otro usuario"
+            msg: "El recurso no es de tu autoría"
         });
     }
 
