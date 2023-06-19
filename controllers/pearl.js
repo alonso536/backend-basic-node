@@ -62,8 +62,6 @@ const update = async (req = request, res = response) => {
         category: req.body.category ?? category
     }
 
-    console.log(data);
-
     if(user.toString() != _id) {
         return res.status(403).json({
             msg: "El recurso no es de tu autoría"

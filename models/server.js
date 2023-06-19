@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { userRoutes, authRoutes, categoryRoutes, pearlRoutes } from "../routes/index.js";
+import { userRoutes, authRoutes, categoryRoutes, pearlRoutes, searchRoutes } from "../routes/index.js";
 import { dbConnection } from "../database/config.js";
 
 export class Server {
@@ -12,7 +12,8 @@ export class Server {
             auth: "/api/auth",
             users: "/api/users",
             categories: "/api/categories",
-            pearls: "/api/pearls"
+            pearls: "/api/pearls",
+            search: "/api/search"
         }
 
         this.database();
@@ -27,6 +28,7 @@ export class Server {
         this.app.use(this.paths.auth, authRoutes);
         this.app.use(this.paths.categories, categoryRoutes);
         this.app.use(this.paths.pearls, pearlRoutes);
+        this.app.use(this.paths.search, searchRoutes);
     }
 
     async database() {
