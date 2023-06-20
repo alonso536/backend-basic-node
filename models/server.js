@@ -1,6 +1,7 @@
 import express from "express";
+import fileUpload from "express-fileupload";
 import cors from "cors";
-import { userRoutes, authRoutes, categoryRoutes, pearlRoutes, searchRoutes } from "../routes/index.js";
+import { userRoutes, authRoutes, categoryRoutes, pearlRoutes, searchRoutes, uploadsRoutes } from "../routes/index.js";
 import { dbConnection } from "../database/config.js";
 
 export class Server {
@@ -13,7 +14,8 @@ export class Server {
             users: "/api/users",
             categories: "/api/categories",
             pearls: "/api/pearls",
-            search: "/api/search"
+            search: "/api/search",
+            uploads: "/api/uploads"
         }
 
         this.database();
@@ -29,6 +31,7 @@ export class Server {
         this.app.use(this.paths.categories, categoryRoutes);
         this.app.use(this.paths.pearls, pearlRoutes);
         this.app.use(this.paths.search, searchRoutes);
+        this.app.use(this.paths.uploads, uploadsRoutes);
     }
 
     async database() {
@@ -41,6 +44,11 @@ export class Server {
         this.app.use(express.json());
 
         this.app.use(express.static("./public"));
+
+        this.app.use(fileUpload({
+            useTempFiles: true,
+            tempFileDir: "/tmp/"
+        }));
     }
 
     lister() {
