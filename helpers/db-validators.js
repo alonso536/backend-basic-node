@@ -43,3 +43,11 @@ export const pearlExists = async (id) => {
         throw new Error(`No existe una perla con el id ${id}`);
     }
 }
+
+export const allowCollections = (collection = "", collections = []) => {
+    const include = collections.includes(collection);
+    if(!include) {
+        throw new Error(`La colección ${collection} no está permitida`);
+    }
+    return true;
+}
