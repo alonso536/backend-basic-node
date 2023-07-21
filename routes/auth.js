@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { googleSignIn, login } from "../controllers/auth.js";
+import { googleSignIn, login, renewToken } from "../controllers/auth.js";
 import { validateUser } from "../middlewares/validate-user.js";
+import { validateJWT } from "../middlewares/validate-jwt.js";
 
 export const authRoutes = Router();
 
@@ -15,3 +16,5 @@ authRoutes.post("/google", [
     check("id_token", "El id_token es obligatorio"),
     validateUser
 ], googleSignIn);
+
+authRoutes.get("/", validateJWT, renewToken);

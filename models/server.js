@@ -1,13 +1,18 @@
 import express from "express";
 import fileUpload from "express-fileupload";
 import cors from "cors";
+import { createServer } from "http";
+import { Server as SocketServer} from "socket.io";
 import { userRoutes, authRoutes, categoryRoutes, pearlRoutes, searchRoutes, uploadsRoutes } from "../routes/index.js";
 import { dbConnection } from "../database/config.js";
+import { socketController } from "../sockets/controller.js";
 
 export class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
+        this.server = createServer(this.app);
+        this.io = new SocketServer(this.server);
 
         this.paths = {
             auth: "/api/auth",
@@ -23,6 +28,8 @@ export class Server {
         this.middlewares();
 
         this.routes();
+
+        this.sockets();
     }
 
     routes() {
@@ -51,8 +58,12 @@ export class Server {
         }));
     }
 
+    sockets() {
+        this.io.on("connection", (socket) => socketController(socket, this.io));
+    }
+
     lister() {
-        this.app.listen(this.port, () => {
+        this.server.listen(this.port, () => {
             console.log(`Escuchando en el puerto ${this.port}`);
         });
     }
